@@ -1,12 +1,17 @@
-import {Head, usePage} from '@inertiajs/react';
+import {Head, Link, usePage} from '@inertiajs/react';
 import AdminLayout from "@/Layouts/AdminLayout.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import SecondaryButton from "@/Components/SecondaryButton.jsx";
+import PrimaryLink from "@/Components/PrimaryLink.jsx";
+import SecondaryLink from "@/Components/SecondaryLink.jsx";
 
 
 export default function Dashboard({ admin, students }) {
 
     const {
         data: students_data,
-        from, to
+        from, to,
+        prev_page_url, next_page_url
     } = students;
     console.log(students);
 
@@ -28,7 +33,7 @@ export default function Dashboard({ admin, students }) {
                             <h2 className="text-xl font-bold">Students ({from} - {to})</h2>
 
                             <div className="mt-6 overflow-y-auto">
-                                <table className="w-full">
+                                <table className="table-auto w-full">
                                     <thead>
                                     <tr className="font-bold bg-gray-100 ">
                                         <th className="text-start px-2 py-4">S/N</th>
@@ -36,6 +41,7 @@ export default function Dashboard({ admin, students }) {
                                         <th className="text-start px-2 py-4">Last Name</th>
                                         <th className="text-start px-2 py-4">Reg. No.</th>
                                         <th className="text-start px-2 py-4">Email</th>
+                                        <th className="text-start px-2 py-4">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -49,7 +55,17 @@ export default function Dashboard({ admin, students }) {
                                                     <td className="p-2">{firstname}</td>
                                                     <td className="p-2">{lastname}</td>
                                                     <td className="p-2">{reg_no}</td>
-                                                    <td className="p-2">{email}</td>
+                                                    <td className="p-2 hover:underline hover:underline-offset-4">
+                                                        <a
+                                                            href={`mailto:${email}`}
+                                                            title={`Send email to ${email}`}
+                                                        >{email}</a>
+                                                    </td>
+                                                    <td className="p-2">
+                                                        <SecondaryLink href={`/students/${student.id}`}>
+                                                            View Profile
+                                                        </SecondaryLink>
+                                                    </td>
                                                 </tr>
                                             )
                                         })
@@ -58,8 +74,20 @@ export default function Dashboard({ admin, students }) {
                                 </table>
                             </div>
 
-                            <div>
+                            <div className="flex items-center justify-between mt-6">
+                                <div>
+                                    <PrimaryLink
+                                        href={prev_page_url || '#'}
+                                        disabled={! prev_page_url}
+                                    >Previous</PrimaryLink>
+                                </div>
 
+                                <div>
+                                    <PrimaryLink
+                                        href={next_page_url || '#'}
+                                        disabled={! next_page_url}
+                                    >Next</PrimaryLink>
+                                </div>
                             </div>
 
                         </div>

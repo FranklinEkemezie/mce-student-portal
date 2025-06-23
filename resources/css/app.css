@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@theme {
+
+    --font-brand-primary: Figtree;
+
+    --color-brand-primary: 'green';
+}
+
+:root {
+    font-family: var(--font-brand-primary), sans-serif;
+}
