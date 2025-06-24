@@ -37,8 +37,8 @@ export default function AdminLayout({ header, children, admin }) {
                                     Students
                                 </NavLink>
                                 <NavLink
-                                    href={route('profile.edit')}
-                                    active={route().current('profile.edit')}
+                                    href={route('courses')}
+                                    active={route().current('courses')}
                                 >
                                     Courses
                                 </NavLink>

@@ -41,6 +41,21 @@ class User extends Authenticatable
         return $this->hasOne(Student::class);
     }
 
+    public function admin(): HasOne
+    {
+        return $this->hasOne(Admin::class);
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->student !== null;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin !== null;
+    }
+
     /**
      * Get the attributes that should be cast.
      *

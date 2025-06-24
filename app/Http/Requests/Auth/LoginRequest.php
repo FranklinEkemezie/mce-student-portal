@@ -39,21 +39,19 @@ class LoginRequest extends FormRequest
      *
      * @throws ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(?string $username, ?string $password, string $errorField): void
     {
         $this->ensureIsNotRateLimited();
 
-        $student = Student::query()
-            ->where('students.reg_no', $this->get('reg_no'))->first();
         $credentials = [
-            'username'  => $student?->user?->username,
-            'password'  => $this->get('password')
+            'username'  => $username,
+            'password'  => $password
         ];
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'reg_no' => trans('auth.failed'),
+                "{$errorField}" => trans('auth.failed'),
             ]);
         }
 
@@ -76,7 +74,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'reg_no' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),

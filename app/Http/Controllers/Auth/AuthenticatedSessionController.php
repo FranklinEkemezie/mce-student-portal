@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,11 +30,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $student = Student::query()
+            ->where('students.reg_no', $request->get('reg_no'))->first();
+
+        $request->authenticate($student?->user?->username, $request->get('password'), 'reg_no');
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route(
+            $request->user()->isStudent() ? 'dashboard' : 'admin.dashboard',
+            absolute: false
+        ));
     }
 
     /**
