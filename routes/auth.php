@@ -26,6 +26,10 @@ Route::middleware('auth:student')->group(function () {
     Route::delete('/logout', [AuthenticatedStudentSessionController::class, 'destroy'])
         ->name('logout');
 
+    Route::put('password', [PasswordController::class, 'update'])
+        ->name('password.update');
+
+
 });
 //Route::middleware('guest')->group(function () {
 //

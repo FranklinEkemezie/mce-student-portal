@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
+
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Student extends Model implements \Illuminate\Contracts\Auth\Authenticatable
+class Student extends Model implements Authenticatable
 {
     //
 
