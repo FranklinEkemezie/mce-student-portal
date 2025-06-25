@@ -10,6 +10,7 @@ use Inertia\Inertia;
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/student.php';
+require __DIR__ . '/admin.php';
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

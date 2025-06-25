@@ -44,7 +44,22 @@ return [
         'student' => [
             'driver' => 'session',
             'provider' => 'students'
-        ]
+        ],
+
+        'admin' => [
+            'driver'    => 'session',
+            'provider'  => 'admins',
+
+            /**
+             * Specify the "redirects" routes per guard
+             * - login - login route if guest
+             * - home  - home (or dashboard) route if authenticated
+             */
+            'redirects' => [
+                'login'     => '/admin/login',
+                'home'      => '/admin/dashboard'
+            ]
+        ],
     ],
 
     /*
@@ -78,6 +93,11 @@ return [
         'students' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Student::class
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Admin::class
         ]
     ],
 

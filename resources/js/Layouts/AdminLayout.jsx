@@ -31,26 +31,27 @@ export default function AdminLayout({ header, children, admin }) {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    href={route('students')}
-                                    active={route().current('students')}
+                                    href={route('admin.dashboard')}
+                                    active={route().current('admin.dashboard')}
                                 >
                                     Students
                                 </NavLink>
                                 <NavLink
-                                    href={route('courses')}
-                                    active={route().current('courses')}
+                                    href={route('admin.dashboard')}
+                                    active={route().current('admin.dashboard')}
                                 >
                                     Courses
                                 </NavLink>
                                 <NavLink
-                                    href={route('results')}
-                                    active={route().current('results')}
+                                    href={route('admin.dashboard')}
+                                    active={route().current('admin.dashboard' +
+                                        '')}
                                 >
                                     Departments
                                 </NavLink>
                                 <NavLink
-                                    href={route('results')}
-                                    active={route().current('results')}
+                                    href={route('admin.dashboard')}
+                                    active={route().current('admin.dashboard')}
                                 >
                                     Results
                                 </NavLink>
@@ -86,12 +87,12 @@ export default function AdminLayout({ header, children, admin }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route('admin.dashboard')}
                                         >
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
-                                            href={route('logout')}
+                                            href={route('admin.dashboard')}
                                             method="post"
                                             as="button"
                                         >
@@ -153,8 +154,8 @@ export default function AdminLayout({ header, children, admin }) {
                 >
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            href={route('dashboard')}
-                            active={route().current('dashboard')}
+                            href={route('admin.dashboard')}
+                            active={route().current('admin.dashboard')}
                         >
                             Dashboard
                         </ResponsiveNavLink>
@@ -171,12 +172,12 @@ export default function AdminLayout({ header, children, admin }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route('admin.dashboard')}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
-                                href={route('logout')}
+                                href={route('admin.dashboard')}
                                 as="button"
                             >
                                 Log Out

@@ -10,10 +10,10 @@ use \Illuminate\Support\Facades\Route;
 /**
  * Redirect routes prefixed with '/student' to the usual url without the prefix
  */
-Route::prefix('/student')->group(function () {
+Route::prefix('/student')->name('student.')->group(function () {
 
-   Route::redirect('/login', '/login');
-   Route::redirect('/dashboard', '/dashboard');
+    Route::get('/login', fn() => redirect(route('login')))->name('login');
+    Route::get('/dashboard', fn() => redirect(route('dashboard')))->name('dashboard');
 });
 
 Route::middleware('auth:student')->group(function () {

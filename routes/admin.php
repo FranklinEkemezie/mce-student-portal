@@ -1,7 +1,15 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Auth\AuthenticatedAdminSessionController;
 
-// Login
-//Route::prefix('/admin')
-//    ->
+Route::prefix('/admin')->group(function () {
+
+    Route::get('/login', [AuthenticatedAdminSessionController::class, 'create'])
+        ->middleware('guest:admin')
+        ->name('admin.login');
+
+    Route::get('/dashboard', [ProfileController::class, 'show'])
+        ->middleware('auth:admin')
+        ->name('admin.dashboard');
+});

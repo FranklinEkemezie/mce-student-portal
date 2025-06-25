@@ -1,14 +1,16 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
-import {Head, Link, useForm, usePage} from '@inertiajs/react';
+import AdminLayout from '@/Layouts/AdminLayout'
+import {Head, Link, useForm, usePage} from '@inertiajs/react'
+import GuestLayout from "@/Layouts/GuestLayout.jsx";
+import InputLabel from "@/Components/InputLabel.jsx";
+import TextInput from "@/Components/TextInput.jsx";
+import InputError from "@/Components/InputError.jsx";
+import Checkbox from "@/Components/Checkbox.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Login({ status, canResetPassword }) {
+
     const { data, setData, post, processing, errors, reset } = useForm({
-        reg_no: '',
+        username: '',
         password: '',
         remember: false,
     });
@@ -24,37 +26,30 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <GuestLayout flash={flash}>
-            <Head title="Log in" />
-
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+        <GuestLayout>
+            <Head title="Login"/>
 
             <form onSubmit={submit}>
 
-
                 <div className="my-4 text-center border-b pb-4">
                     <h1 className="text-2xl font-bold text">Login</h1>
-                    <p className="text-sm text-gray-800">Enter your details to login to Student dashboard</p>
+                    <p className="text-sm text-gray-800">Enter your details to login to Admin dashboard</p>
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="reg_no" value="Registration Number"/>
+                    <InputLabel htmlFor="username" value="Username"/>
 
                     <TextInput
-                        id="reg_no"
-                        name="reg_no"
-                        value={data.reg_no}
+                        id="username"
+                        name="username"
+                        value={data.username}
                         className="mt-1 block w-full"
-                        autoComplete="number"
+                        autoComplete="username"
                         isFocused={true}
-                        onChange={(e) => setData('reg_no', e.target.value)}
+                        onChange={(e) => setData('username', e.target.value)}
                     />
 
-                    <InputError message={errors.reg_no} className="mt-2"/>
+                    <InputError message={errors.username} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
@@ -103,6 +98,7 @@ export default function Login({ status, canResetPassword }) {
                     </PrimaryButton>
                 </div>
             </form>
+
         </GuestLayout>
-    );
+    )
 }
