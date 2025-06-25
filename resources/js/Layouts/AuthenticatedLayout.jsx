@@ -6,7 +6,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const user = usePage().props.auth.student.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -31,14 +31,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    href={route('profile.edit')}
-                                    active={route().current('profile.edit')}
+                                    href={route('dashboard')}
+                                    active={route().current('dashboard')}
                                 >
                                     Profile
                                 </NavLink>
                                 <NavLink
-                                    href={route('results')}
-                                    active={route().current('results')}
+                                    href={route('dashboard')}
+                                    active={route().current('dashboard')}
                                 >
                                     Results
                                 </NavLink>
@@ -74,13 +74,18 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={route('dashboard')}
                                         >
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
+                                            href={route('dashboard')}
+                                        >
+                                            Notifications
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
                                             href={route('logout')}
-                                            method="post"
+                                            method="delete"
                                             as="button"
                                         >
                                             Log Out
@@ -159,12 +164,12 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={route('dashboard')}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
-                                method="post"
                                 href={route('logout')}
+                                method="delete"
                                 as="button"
                             >
                                 Log Out

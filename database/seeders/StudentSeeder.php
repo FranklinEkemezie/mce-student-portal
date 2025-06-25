@@ -62,8 +62,8 @@ class StudentSeeder extends Seeder
             return "{$username}_{$last4Digits}";
         };
 
-        $getEmail = fn (string $firstName, string $regNo): string => (
-            Str::lower($firstName) . ".$regNo@example.test"
+        $getEmail = fn (string $lastName, string $regNo): string => (
+            Str::lower($lastName) . ".$regNo@example.test"
         );
 
         while ($line = fgetcsv($file)) {
@@ -77,8 +77,8 @@ class StudentSeeder extends Seeder
 
             User::create([
                 'username'  => $getUsername($name, $regNo),
-                'email'     => $getEmail($firstName, $regNo),
-                'password'  => $regNo // use reg. no as password
+                'email'     => $getEmail($lastName, $regNo),
+                'password'  => $regNo // use reg. no. as password
             ])->student()->create([
                 'first_name'    => $firstName,
                 'last_name'     => $lastName,

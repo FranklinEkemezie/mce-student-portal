@@ -4,8 +4,8 @@ import {Head, usePage} from '@inertiajs/react';
 /**
  *
  * @param student {{
- *     firstname: string,
- *     lastname: string,
+ *     first_name: string,
+ *     last_name: string,
  *     reg_no: string,
  *     user: {
  *         email: string
@@ -15,8 +15,6 @@ import {Head, usePage} from '@inertiajs/react';
  * @constructor
  */
 export default function Dashboard({ student }) {
-
-    const { props } = usePage();
 
     return (
         <AuthenticatedLayout
@@ -36,10 +34,10 @@ export default function Dashboard({ student }) {
 
                             <div className="mt-6">
                                 <p>
-                                    First Name: <span className="font-medium">{student.firstname}</span>
+                                    First Name: <span className="font-medium">{student.first_name}</span>
                                 </p>
                                 <p>
-                                    Last Name: <span className="font-medium">{student.lastname}</span>
+                                    Last Name: <span className="font-medium">{student.last_name}</span>
                                 </p>
                                 <p>
                                     Reg. No.: <span className="font-medium">{student.reg_no}</span>

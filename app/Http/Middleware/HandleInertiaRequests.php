@@ -29,11 +29,25 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $getFlash = fn(string $key) => (
+            fn () => ([
+                'message'   => $v = $request->session()->get($key),
+                'timestamp' => $v ? now()->timestamp : null
+            ])
+        );
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user'      => $request->user(),
+                'student'   => $request->user('student')?->load('user')
             ],
+            'flash' => [
+                'success'   => $getFlash('message'),    // success
+                'error'     => $getFlash('error'),      // errors
+                'warning'   => $getFlash('warning'),    // warnings
+                'info'      => $getFlash('info')        // infos
+            ]
         ];
     }
 }

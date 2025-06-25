@@ -8,14 +8,23 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\StudentAuthenticatedSessionController;
+use App\Http\Controllers\Auth\AuthenticatedStudentSessionController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:student')->group(function () {
 
-    Route::get('/login', [StudentAuthenticatedSessionController::class, 'create'])
+    Route::get('/login', [AuthenticatedStudentSessionController::class, 'create'])
         ->name('login');
+
+    Route::post('/login', [AuthenticatedStudentSessionController::class, 'store']);
+
+});
+
+Route::middleware('auth:student')->group(function () {
+
+    Route::delete('/logout', [AuthenticatedStudentSessionController::class, 'destroy'])
+        ->name('logout');
 
 });
 //Route::middleware('guest')->group(function () {

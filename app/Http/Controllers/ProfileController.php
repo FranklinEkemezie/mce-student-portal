@@ -13,6 +13,15 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+
+    public function index(Request $request)
+    {
+        return \inertia('Dashboard', [
+            'student' => $request->user('student')->load('user')
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -61,4 +70,5 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
 }
