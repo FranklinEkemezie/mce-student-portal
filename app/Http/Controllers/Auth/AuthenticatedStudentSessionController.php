@@ -37,7 +37,8 @@ class AuthenticatedStudentSessionController extends Controller
             'reg_no.required'   => 'The registration number field is required.'
         ]);
 
-        if (! Auth::guard('student')->attempt($credentials)) {
+        $remember = !! $request->get('remember');
+        if (! Auth::guard('student')->attempt($credentials, $remember)) {
             return redirect()->back()
                 ->with('error', 'Invalid registration number or password');
         }

@@ -31,19 +31,27 @@ return Application::configure(basePath: dirname(__DIR__))
          * (unauthenticated users) and authenticated users, depending
          * on the context in which the route is being accessed.
          * @param Request $request The current incoming request instance.
+         * @param string $middlewareType The type of middleware causing the
+         * redirect. This is usually `guest` or `admin`.
          * @param string $redirectType The key in the `redirects` array of the guard
          * (e.g. 'home', 'login', 'dashboard').
          * @param string $default The fallback route path or URL to use if no
          * custom redirect is found.
          * @return string The resolved redirect URL or path.
          */
-        $getGuardRedirectToRoute = function  (Request $request, string $redirectType, string $default): string {
+        $getGuardRedirectToRoute = function  (
+            Request $request,
+            string $middlewareType,
+            string $redirectType,
+            string $default
+        ): string {
             $route = $request->route();
 
             // Get middlewares attached to the current route
             $middlewareStack = $route?->gatherMiddleware() ?? [];
             foreach ($middlewareStack as $middleware) {
-                if (! str_starts_with($middleware, 'auth:')) continue;
+                // check if the middleware starts with "auth:" or "guest:"
+                if (! str_starts_with($middleware, "$middlewareType:")) continue;
 
                 [, $guard] = explode(':', $middleware);
 
@@ -59,10 +67,14 @@ return Application::configure(basePath: dirname(__DIR__))
         };
 
         $middleware->redirectGuestsTo(fn (Request $request) => (
-            $getGuardRedirectToRoute($request, 'login', route('login'))
+            $getGuardRedirectToRoute(
+                $request, 'auth', 'login', route('login')
+            )
         ));
         $middleware->redirectUsersTo(fn (Request $request) => (
-            $getGuardRedirectToRoute($request, 'home', route('dashboard'))
+            $getGuardRedirectToRoute(
+                $request, 'guest', 'home', route('dashboard')
+            )
         ));
 
         //

@@ -9,6 +9,8 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        return inertia('Admin/Dashboard');
+        return inertia('Admin/Dashboard', [
+            'admin' => auth()->user()
+        ]);
     }
 }
