@@ -15,21 +15,9 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->enum('level', [1, 2, 3]); // dummy levels for now
+            $table->enum('level', [1, 2, 3])->default(1); // dummy levels for now
             $table->timestamps();
         });
-
-        // Add default admin
-        if (app()->environment('local')) {
-            User::create([
-                'username'  => 'admin',
-                'email'     => 'admin@example.test',
-                'password'  => 'admin',
-                'email_verified_at' => now()
-            ])->admin()->create([
-                'level'     => 3
-            ]);
-        }
     }
 
     /**

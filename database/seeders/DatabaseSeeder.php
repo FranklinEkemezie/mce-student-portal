@@ -16,5 +16,15 @@ class DatabaseSeeder extends Seeder
 
         // Seed students
         $this->call(StudentSeeder::class);
+
+        // Add default admin
+        User::create([
+            'username'  => 'admin',
+            'email'     => 'admin@example.test',
+            'password'  => 'admin',
+            'email_verified_at' => now()
+        ])->admin()->create([
+            'level'     => 3
+        ]);
     }
 }
