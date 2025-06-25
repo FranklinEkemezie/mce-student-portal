@@ -11,8 +11,8 @@ import { Link, useForm, usePage } from '@inertiajs/react';
  * @param status
  * @param className
  * @param student {{
- *     firstname: string,
- *     lastname: string,
+ *     first_name: string,
+ *     last_name: string,
  *     user: {
  *         email: string
  *     }
@@ -26,17 +26,13 @@ export default function UpdateProfileInformation({
     className = '',
     student
 }) {
-    const user = usePage().props.auth.user;
-
-    console.log(student);
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            firstname:  student.firstname,
-            lastname:   student.lastname,
-
-            username: user.username,
-            email: user.email,
+            first_name:  student.first_name,
+            last_name:   student.last_name,
+            username: student.user.username,
+            email: student.user.email,
         });
 
     const submit = (e) => {
@@ -75,35 +71,35 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="firstname" value="First Name"/>
+                    <InputLabel htmlFor="first_name" value="First Name"/>
 
                     <TextInput
-                        id="firstname"
+                        id="first_name"
                         className="mt-1 block w-full"
-                        value={data.firstname}
-                        onChange={(e) => setData('firstname', e.target.value)}
+                        value={data.first_name}
+                        onChange={(e) => setData('first_name', e.target.value)}
                         required
                         isFocused
-                        autoComplete="firstname"
+                        autoComplete="first_name"
                     />
 
-                    <InputError className="mt-2" message={errors.firstname}/>
+                    <InputError className="mt-2" message={errors.first_name}/>
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="lastname" value="Last Name (Surname)"/>
+                    <InputLabel htmlFor="last_name" value="Last Name (Surname)"/>
 
                     <TextInput
-                        id="lastname"
+                        id="last_name"
                         className="mt-1 block w-full"
-                        value={data.lastname}
-                        onChange={(e) => setData('lastname', e.target.value)}
+                        value={data.last_name}
+                        onChange={(e) => setData('last_name', e.target.value)}
                         required
                         isFocused
-                        autoComplete="lastname"
+                        autoComplete="last_name"
                     />
 
-                    <InputError className="mt-2" message={errors.lastname}/>
+                    <InputError className="mt-2" message={errors.last_name}/>
                 </div>
 
                 <div>
@@ -122,7 +118,7 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.email}/>
                 </div>
 
-                {mustVerifyEmail && user.email_verified_at === null && (
+                {mustVerifyEmail && student.user.email_verified_at === null && (
                     <div>
                         <p className="mt-2 text-sm text-gray-800">
                             Your email address is unverified.

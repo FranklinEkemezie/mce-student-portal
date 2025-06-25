@@ -11,12 +11,10 @@ class Student extends Model implements \Illuminate\Contracts\Auth\Authenticatabl
     //
 
     protected $fillable = [
-        'firstname',
-        'lastname',
+        'first_name',
+        'last_name',
         'username',
-        'reg_no',
-        'email',
-        'password'
+        'reg_no'
     ];
 
     public function user(): BelongsTo

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Student;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,26 +31,46 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => $request->user('student') instanceof MustVerifyEmail,
             'status' => session('status'),
-            'student' => auth()->user()->student()->with('user')->first()
+            'student' => $request->user('student')->load('user')
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $student = $request->user('student');
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $studentAttrs = $request->validate([
+            'first_name'    => ['required', 'string'],
+            'last_name'     => ['required', 'string'],
+        ]);
+        $userAttrs = $request->validate([
+            'username' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9_]+$/',
+                Rule::unique(User::class)->ignore($student->user->id)
+            ],
+            'email' => ['required', 'email', 'max:255',
+                Rule::unique(User::class)->ignore($student->user->id)
+            ]
+        ], [
+            'username.regex' => 'Username can only contain alphabets, numbers and underscore (__)',
+            'email.unique'  => 'Email already exists'
+        ]);
+
+        $student->fill($studentAttrs);
+        $student->user->fill($userAttrs);
+
+        if ($student->user->isDirty('email')) {
+            $student->user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $student->save();
+        $student->user->save();
 
-        return Redirect::route('profile.edit');
+        return redirect(route('profile.edit'))->with('success', 'Profile updated successfully');
     }
 
     /**

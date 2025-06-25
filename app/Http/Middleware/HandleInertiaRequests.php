@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
                 'student'   => $request->user('student')?->load('user')
             ],
             'flash' => [
-                'success'   => $getFlash('message'),    // success
+                'success'   => $getFlash('success'),    // success
                 'error'     => $getFlash('error'),      // errors
                 'warning'   => $getFlash('warning'),    // warnings
                 'info'      => $getFlash('info')        // infos
