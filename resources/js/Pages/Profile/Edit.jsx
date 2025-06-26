@@ -1,12 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import {Head, usePage} from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import StudentLayout from "@/Layouts/StudentLayout.jsx";
 
-export default function Edit({ mustVerifyEmail, status, student }) {
+export default function Edit({ mustVerifyEmail, status }) {
+
     return (
-        <AuthenticatedLayout
+        <StudentLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
                     Profile
@@ -22,7 +24,6 @@ export default function Edit({ mustVerifyEmail, status, student }) {
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
                             className="max-w-xl"
-                            student={student}
                         />
                     </div>
 
@@ -32,6 +33,6 @@ export default function Edit({ mustVerifyEmail, status, student }) {
 
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </StudentLayout>
     );
 }

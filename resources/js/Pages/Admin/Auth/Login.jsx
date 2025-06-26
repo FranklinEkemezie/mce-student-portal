@@ -27,7 +27,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Login"/>
+            <Head title="Admin | Login"/>
 
             <form onSubmit={submit}>
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Traits\BelongsToUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Student extends Model implements Authenticatable
 {
     //
+
+    use BelongsToUser;
 
     protected $fillable = [
         'first_name',
@@ -23,6 +26,10 @@ class Student extends Model implements Authenticatable
         return $this->belongsTo(User::class);
     }
 
+
+    /*
+     * Authenticatable Interface method implementation
+     */
 
     public function getAuthIdentifierName(): string
     {

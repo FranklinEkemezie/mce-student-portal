@@ -2,15 +2,23 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import {Head, Link, usePage} from '@inertiajs/react';
 import { useState } from 'react';
 import Toast from "@/Components/Toast.jsx";
 import ToastMessage from "@/Components/ToastMessage.jsx";
 
-export default function AuthenticatedLayout({ header, children }) {
-    const { props: { auth: { student: { user } }, flash } } = usePage();
+export default function AuthenticatedLayout(
+    {
+        navLinks=[],
+        header,
+        logoutRouteName,
+        dropdownLinks=[],
+        children
+    }
+) {
+    const { props: { auth: { user }, flash } } = usePage();
 
-    console.log(flash);
+    console.log(usePage().props.auth);
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -24,6 +32,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 <ToastMessage message={flash?.info} />
                 <ToastMessage message="Hello from here. How are you doing?" />
             </Toast>
+
             <div className="min-h-screen bg-gray-100">
                 <nav className="border-b border-gray-100 bg-white">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -31,29 +40,20 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="flex">
                                 <div className="flex shrink-0 items-center">
                                     <Link href="/">
-                                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800"/>
                                     </Link>
                                 </div>
 
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink
-                                        href={route('dashboard')}
-                                        active={route().current('dashboard')}
-                                    >
-                                        Dashboard
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('profile.edit')}
-                                        active={route().current('profile.edit')}
-                                    >
-                                        Profile
-                                    </NavLink>
-                                    <NavLink
-                                        href={route('dashboard')}
-                                        active={route().current('dashboard')}
-                                    >
-                                        Results
-                                    </NavLink>
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 md:flex">
+                                    {
+                                        navLinks.map(({ title, name }) => (
+                                            <NavLink
+                                                key={title}
+                                                href={route(name)}
+                                                active={route().current(name)}
+                                            >{title}</NavLink>
+                                        ))
+                                    }
                                 </div>
                             </div>
 
@@ -66,7 +66,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {user.username}
+                                                {user?.username || "guest"}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -85,18 +85,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                         </Dropdown.Trigger>
 
                                         <Dropdown.Content>
+                                            {
+                                                dropdownLinks.map(({ title, name }) => (
+                                                    <Dropdown.Link key={title} href={route(name)}>
+                                                        {title}
+                                                    </Dropdown.Link>
+                                                ))
+                                            }
                                             <Dropdown.Link
-                                                href={route('profile.edit')}
-                                            >
-                                                Profile
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route('dashboard')}
-                                            >
-                                                Notifications
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route('logout')}
+                                                href={route(logoutRouteName)}
                                                 method="delete"
                                                 as="button"
                                             >
@@ -153,34 +150,43 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div
                         className={
                             (showingNavigationDropdown ? 'block' : 'hidden') +
-                            ' sm:hidden'
+                            ' md:hidden'
                         }
                     >
                         <div className="space-y-1 pb-3 pt-2">
-                            <ResponsiveNavLink
-                                href={route('dashboard')}
-                                active={route().current('dashboard')}
-                            >
-                                Dashboard
-                            </ResponsiveNavLink>
+                            {
+                                navLinks.map(({ title, name }) => (
+                                    <ResponsiveNavLink
+                                        key={title}
+                                        href={route(name)}
+                                        active={route().current(name)}
+                                    >
+                                        {title}
+                                    </ResponsiveNavLink>
+                                ))
+                            }
                         </div>
 
                         <div className="border-t border-gray-200 pb-1 pt-4">
                             <div className="px-4">
                                 <div className="text-base font-medium text-gray-800">
-                                    {user.username}
+                                    {user?.username || "guest"}
                                 </div>
                                 <div className="text-sm font-medium text-gray-500">
-                                    {user.email}
+                                    {user?.email || "guest@exam.test"}
                                 </div>
                             </div>
 
                             <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route('profile.edit')}>
-                                    Profile
-                                </ResponsiveNavLink>
+                                {
+                                    dropdownLinks.map(({ title, name }) => (
+                                        <ResponsiveNavLink key={title} href={route(name)}>
+                                            {title}
+                                        </ResponsiveNavLink>
+                                    ))
+                                }
                                 <ResponsiveNavLink
-                                    href={route('logout')}
+                                    href={route(logoutRouteName)}
                                     method="delete"
                                     as="button"
                                 >
@@ -194,12 +200,16 @@ export default function AuthenticatedLayout({ header, children }) {
                 {header && (
                     <header className="bg-white shadow">
                         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                            {header}
+                            <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                                {header}
+                            </h2>
                         </div>
                     </header>
                 )}
 
-                <main>{children}</main>
+                <main className="px-2">
+                    {children}
+                </main>
             </div>
         </>
     );

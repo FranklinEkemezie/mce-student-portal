@@ -24,15 +24,17 @@ export default function UpdateProfileInformation({
     mustVerifyEmail,
     status,
     className = '',
-    student
 }) {
+
+    const { props: { auth: { user }} } = usePage();
+    const { student } = user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             first_name:  student.first_name,
             last_name:   student.last_name,
-            username: student.user.username,
-            email: student.user.email,
+            username: user.username,
+            email: user.email,
         });
 
     const submit = (e) => {

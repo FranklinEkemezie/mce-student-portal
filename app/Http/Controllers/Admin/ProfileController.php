@@ -13,4 +13,14 @@ class ProfileController extends Controller
             'admin' => auth()->user()
         ]);
     }
+
+    public function edit()
+    {
+        return inertia('Admin/Profile/Edit');
+    }
+
+    public function update()
+    {
+
+    }
 }

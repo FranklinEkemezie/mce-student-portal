@@ -2,7 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use App\Traits\BelongsToUser;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -26,6 +31,7 @@ class HandleInertiaRequests extends Middleware
      * Define the props that are shared by default.
      *
      * @return array<string, mixed>
+     * @throws Exception
      */
     public function share(Request $request): array
     {
@@ -36,11 +42,25 @@ class HandleInertiaRequests extends Middleware
             ])
         );
 
+        $getAuthUser = function (Request $request, array $relations): ?User {
+            $user = $request->user();
+            if (! $user) return null;
+            if ($user instanceof User) return $user->load($relations);
+            if ($user instanceof Model &&
+                in_array(BelongsToUser::class, class_uses($user))) {
+                return $user->getUser()->load($relations);
+            }
+
+            throw new Exception(
+                "The request user model belong to a user and use the " .
+                BelongsToUser::class . " trait"
+            );
+        };
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user'      => $request->user(),
-                'student'   => $request->user('student')?->load('user')
+                'user' => $getAuthUser($request, ['student', 'admin'])
             ],
             'flash' => [
                 'success'   => $getFlash('success'),    // success

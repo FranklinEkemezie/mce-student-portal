@@ -5,6 +5,7 @@
  */
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\RedirectIfAuthenticatedByAnyGuard;
 use \Illuminate\Support\Facades\Route;
 
 /**
