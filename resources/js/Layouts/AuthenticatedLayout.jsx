@@ -18,8 +18,6 @@ export default function AuthenticatedLayout(
 ) {
     const { props: { auth: { user }, flash } } = usePage();
 
-    console.log(usePage().props.auth);
-
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 

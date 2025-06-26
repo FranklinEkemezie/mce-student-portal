@@ -16,13 +16,8 @@ class StudentController extends Controller
     {
         //
 
-        $students = Student::with(['user'])->paginate(50);
         return Inertia::render('Admin/Students', [
-            'admin' => [
-                'username'  => 'admin_me',
-                'email'     => 'admin@me.com'
-            ],
-            'students' => $students
+            'students' => Student::with(['user'])->paginate(50)
         ]);
     }
 

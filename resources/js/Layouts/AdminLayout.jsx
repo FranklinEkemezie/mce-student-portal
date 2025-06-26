@@ -6,7 +6,7 @@ export default function AdminLayout({ header, children }) {
         <AuthenticatedLayout
             navLinks={[
                 {title: 'Dashboard', name: 'admin.dashboard'},
-                {title: 'Students', name: 'admin.dashboard'},
+                {title: 'Students', name: 'students'},
                 {title: 'Courses', name: 'admin.dashboard'},
             ]}
             header={header}
