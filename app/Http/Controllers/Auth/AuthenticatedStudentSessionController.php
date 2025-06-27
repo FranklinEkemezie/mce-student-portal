@@ -43,7 +43,9 @@ class AuthenticatedStudentSessionController extends Controller
                 ->with('error', 'Invalid registration number or password');
         }
 
-        return redirect('/dashboard');
+        return redirect('/dashboard')->with([
+            'success'   => 'Logged in successfully'
+        ]);
     }
 
     /**
@@ -59,6 +61,8 @@ class AuthenticatedStudentSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect(route('login'));
+        return redirect(route('login'))->with([
+            'success' => 'You have been logged out'
+        ]);
     }
 }
