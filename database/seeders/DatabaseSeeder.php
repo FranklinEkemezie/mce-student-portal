@@ -14,11 +14,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        // Seed schools
-        $this->call(SchoolSeeder::class);
-
-        // Seed students
-        $this->call(StudentSeeder::class);
+        //
+        $this->call([
+            SchoolSeeder::class,
+            DepartmentSeeder::class,
+            StudentSeeder::class
+        ]);
 
         // Add default admin
         User::create([

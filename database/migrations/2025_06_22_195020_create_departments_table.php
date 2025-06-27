@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(School::class);
             $table->string('name');
             $table->string('code');
-            $table->foreignIdFor(School::class);
             $table->timestamps();
         });
     }
