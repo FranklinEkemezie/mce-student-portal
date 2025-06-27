@@ -4,11 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\School;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\RecordNotFoundException;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
-use InvalidArgumentException;
 
 class DepartmentSeeder extends CustomSeeder
 {
@@ -18,35 +14,36 @@ class DepartmentSeeder extends CustomSeeder
      */
     private static function seedDepartmentsDataFromCSV(): void
     {
-        $deptsDir = 'seeders/departments';
-        foreach (Storage::files($deptsDir) as $deptSeedCSVFile) {
+        $departmentsDir = 'seeders/departments';
+        foreach (self::loadSeedDataFromCSVDir(
+            $departmentsDir,
+            ['NAME', 'CODE'],
+            "@^$departmentsDir/DEPT_([a-zA-Z]+)\.csv$@",
+            'DEPT_SESET',
+        ) as $departmentData) {
 
-            $deptSeedCSVFilePattern = "@^$deptsDir/DEPT_([a-zA-Z]+)\.csv$@";
-            if (preg_match($deptSeedCSVFilePattern, $deptSeedCSVFile, $matches) === false) {
-                throw new InvalidArgumentException(
-                    "Unacceptable file name format: $deptSeedCSVFile.
-                     File name must named as 'DEPT_[school_code]' ($deptSeedCSVFilePattern) e.g. 'DEPT_SESET'"
-                );
-            }
+            [
+                'matches'   => $matches,
+                'row'       => $department
+            ] = $departmentData;
 
 
             [, $schoolCode] = $matches;
-            $departments = self::loadSeedDataFromCSV($deptSeedCSVFile, ['NAME', 'CODE']);
-            foreach ($departments as $department) {
-                $school = School::query()->where('code', $schoolCode)->first();
-                if (! $school) {
-                    throw new RecordNotFoundException(
-                        "No school with code $schoolCode found"
-                    );
-                }
-
-                $school->departments()->create([
-                    'name'  => $department['NAME'],
-                    'code'  => $department['CODE']
-                ]);
+            $school = School::query()
+                ->where('code', $schoolCode)
+                ->first();
+            if (! $school) {
+                throw new RecordNotFoundException(
+                    "No school with code $schoolCode found"
+                );
             }
 
+            $school->departments()->create([
+                'name'  => $department['NAME'],
+                'code'  => $department['CODE']
+            ]);
         }
+
     }
 
     /**

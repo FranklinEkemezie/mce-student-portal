@@ -3,12 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 
 class StudentSeeder extends CustomSeeder
 {

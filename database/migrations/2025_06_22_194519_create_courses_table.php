@@ -14,11 +14,12 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->foreignIdFor(Department::class); // dept. in charge of course
+            $table->string('title')->unique();
+            $table->string('code')->unique();
             $table->integer('unit');
             $table->string('prerequisites')
-                ->nullable(); // comma separated e.g. MCE301,ENG102
-            $table->foreignIdFor(Department::class); // dept. in charge of course
+                ->nullable(); // comma separated e.g. MCE 301,ENG 102
             $table->timestamps();
         });
     }
