@@ -7,7 +7,7 @@ export default function AdminLayout({ header, children }) {
             navLinks={[
                 {title: 'Dashboard', name: 'admin.dashboard'},
                 {title: 'Students', name: 'students'},
-                {title: 'Courses', name: 'admin.dashboard'},
+                {title: 'Courses', name: 'admin.courses'},
             ]}
             header={header}
             dropdownLinks={[

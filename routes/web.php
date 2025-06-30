@@ -5,14 +5,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/course.php';
 require __DIR__ . '/student.php';
 require __DIR__ . '/admin.php';
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),

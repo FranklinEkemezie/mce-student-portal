@@ -6,7 +6,7 @@
 
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedAdminSessionController;
-use App\Http\Middleware\RedirectIfAuthenticatedByAnyGuard;
+use App\Http\Controllers\CourseController;
 
 Route::prefix('/admin')->name('admin.')->group(function () {
 
@@ -22,5 +22,8 @@ Route::prefix('/admin')->name('admin.')->group(function () {
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+        Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+
     });
 });

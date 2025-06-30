@@ -7,6 +7,7 @@ use App\Traits\BelongsToUser;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 
@@ -42,8 +43,22 @@ class HandleInertiaRequests extends Middleware
             ])
         );
 
-        $getAuthUser = function (Request $request, array $relations): ?User {
-            $user = $request->user();
+        /**
+         * Get the authenticated user
+         * @param Request $request
+         * @param array $guards
+         * @param array $relations
+         * @return User|null
+         * @throws Exception
+         */
+        $getAuthUser = function (Request $request, array $guards=[], array $relations=[]): ?User {
+
+            $guards[] = null;
+            foreach ($guards as $guard) {
+                $user = $request->user($guard);
+                if ($user) break;
+            }
+
             if (! $user) return null;
             if ($user instanceof User) return $user->load($relations);
             if ($user instanceof Model &&
@@ -58,9 +73,10 @@ class HandleInertiaRequests extends Middleware
         };
 
         return [
+            // Define global props
             ...parent::share($request),
             'auth' => [
-                'user' => $getAuthUser($request, ['student', 'admin'])
+                'user' => $getAuthUser($request, ['student', 'admin'], ['student', 'admin'])
             ],
             'flash' => [
                 'success'   => $getFlash('success'),    // success

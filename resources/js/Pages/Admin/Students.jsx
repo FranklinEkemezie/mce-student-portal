@@ -4,7 +4,7 @@ import PrimaryLink from "@/Components/PrimaryLink.jsx";
 import SecondaryLink from "@/Components/SecondaryLink.jsx";
 
 
-export default function Dashboard({ admin, students }) {
+export default function Dashboard({ students }) {
 
     const {
         data: students_data,
@@ -14,14 +14,9 @@ export default function Dashboard({ admin, students }) {
 
     return (
         <AdminLayout
-            admin={admin}
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Admin Dashboard
-                </h2>
-            }
+            header="Students"
         >
-            <Head title="Admin Dashboard" />
+            <Head title="Admin | Courses" />
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -53,10 +48,13 @@ export default function Dashboard({ admin, students }) {
                                     <tbody>
                                     {
                                         students_data.map((student, index) => {
-                                            const { first_name, last_name, reg_no, user: { email } } = student;
+                                            const {
+                                                id, first_name, last_name, reg_no,
+                                                user: { email }
+                                            } = student;
 
                                             return (
-                                                <tr key={reg_no} className="border-b hover:bg-gray-50">
+                                                <tr key={id} className="border-b hover:bg-gray-50">
                                                     <td className="p-2">{from + index}</td>
                                                     <td className="p-2">{first_name}</td>
                                                     <td className="p-2">{last_name}</td>
@@ -68,7 +66,7 @@ export default function Dashboard({ admin, students }) {
                                                         >{email}</a>
                                                     </td>
                                                     <td className="p-2">
-                                                        <SecondaryLink href={`/students/${student.id}`}>
+                                                        <SecondaryLink href={`/students/${id}`}>
                                                             View Profile
                                                         </SecondaryLink>
                                                     </td>
