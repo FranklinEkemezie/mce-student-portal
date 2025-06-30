@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/course.php';
 require __DIR__ . '/student.php';
 require __DIR__ . '/admin.php';
 
@@ -23,6 +22,32 @@ Route::get('/', function (Request $request) {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::prefix('/results')->name('results.')->controller(ResultController::class)->group(function () {
+
+    Route::get('/create', 'create')
+        ->middleware('auth:admin')
+        ->name('create');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //

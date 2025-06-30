@@ -1,38 +1,42 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 
 class ResultController extends Controller
 {
-    //
-
-    public function index(Request $request)
+    public function index()
     {
-        $student = $request->user()->student;
 
-        $file = Storage::disk('local')->readStream('MCE_2022_DATA_CSV.csv');
+    }
 
-        $results = collect();
+    public function create()
+    {
+        return inertia('Result/Create', [
+            'courses' => Course::all()
+        ]);
+    }
 
-        $title = fgetcsv($file);
-        while ($line = fgetcsv($file)) {
+    public function store(Request $request)
+    {
+    }
 
-            [, , $regNo] = $line;
+    public function show($id)
+    {
+    }
 
-            if ($regNo !== $student->reg_no) continue;
+    public function edit($id)
+    {
+    }
 
-            $result = array_combine($title, $line);
-            if ($result) {
-                $result['year'] = 2022;
-            }
+    public function update(Request $request, $id)
+    {
+    }
 
-            $results[] = $result;
-        }
-
-        return $results;
+    public function destroy($id)
+    {
     }
 }

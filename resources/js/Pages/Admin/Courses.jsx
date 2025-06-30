@@ -5,6 +5,7 @@ import React, {useState} from "react";
 import {Select} from "@/Components/SelectDropdown.jsx";
 import {useCourse} from "@/hooks/useCourse.js";
 import CoursesByLabel from "@/Partials/CoursesByLabel.jsx";
+import SelectInput from "@/Components/SelectInput.jsx";
 
 
 /**
@@ -126,18 +127,19 @@ export default function Courses({ courses }) {
                                 {/* Group By */}
                                 <div>
                                     <label htmlFor="group-by-select" className="me-2 font-medium">Group By: </label>
-                                    <select
+                                    <SelectInput
                                         id="group-by-select"
                                         className="border border-gray-300 rounded-md text-sm"
+                                        options={{
+                                            'department': 'Department',
+                                            'unit': 'Unit',
+                                            'level': 'Level',
+                                            'semester': 'Semester',
+                                            'none': 'None'
+                                        }}
                                         onChange={(e) => setActiveGroupBy(e.target.value)}
                                         value={activeGroupBy}
-                                    >
-                                        <option value="department">Department</option>
-                                        <option value="unit">Unit</option>
-                                        <option value="level">Level</option>
-                                        <option value="semester">Semester</option>
-                                        <option value="none">None</option>
-                                    </select>
+                                    />
                                 </div>
 
                             </div>

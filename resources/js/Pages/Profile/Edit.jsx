@@ -1,6 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, usePage} from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
+import {Head} from '@inertiajs/react';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import StudentLayout from "@/Layouts/StudentLayout.jsx";
