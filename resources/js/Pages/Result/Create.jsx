@@ -127,7 +127,7 @@ export default function Create({ courses }) {
                                     options={courses.reduce((options, {code, title}) => (
                                         {...options, [code]: `${code} - ${title}`}
                                     ), {})}
-                                    className="mt-1"
+                                    className="mt-1 w-full"
                                     onChange={(e) => setData('course', e.target.value)}
                                 />
                             </div>
@@ -139,12 +139,12 @@ export default function Create({ courses }) {
                                     A file is considered valid if:
                                     <ul className="list-disc list-inside">
                                         <li>It is a Comma Separated Values (CSV) file.</li>
-                                        <li>It contains columns with the following headers:
-                                            <strong>REG. NO.</strong>,&nbsp;
-                                            <strong>LAB</strong>, &nbsp;
-                                            <strong>TEST</strong>, &nbsp;
-                                            <strong>EXAM</strong>, &nbsp;
-                                            <strong>TOTAL</strong>.
+                                        <li>It contains columns with one of the following required headers:
+                                            <ul className="ms-4 list-disc list-inside">
+                                                <li><strong>REG. NO.</strong>, <strong>LAB</strong>, <strong>TEST</strong>, <strong>EXAM</strong>; or</li>
+                                                <li><strong>REG. NO.</strong>, <strong>TOTAL</strong>; or</li>
+                                                <li><strong>REG. NO.</strong>, <strong>GRADE</strong>.</li>
+                                            </ul>
                                         </li>
                                     </ul>
                                 </div>

@@ -4,13 +4,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Result;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
 {
     public function index()
     {
-
+        return inertia('Result/Index', [
+            'results' => Result::all()->load('course')
+        ]);
     }
 
     public function create()

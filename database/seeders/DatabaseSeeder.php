@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             SchoolSeeder::class,
             DepartmentSeeder::class,
             CourseSeeder::class,
-            StudentSeeder::class
+            StudentSeeder::class,
+            ResultSeeder::class,
         ]);
 
         // Add default admin

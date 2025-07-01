@@ -23,12 +23,6 @@ Route::get('/', function (Request $request) {
     ]);
 });
 
-Route::prefix('/results')->name('results.')->controller(ResultController::class)->group(function () {
-
-    Route::get('/create', 'create')
-        ->middleware('auth:admin')
-        ->name('create');
-});
 
 
 

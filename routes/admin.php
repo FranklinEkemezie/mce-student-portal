@@ -7,6 +7,7 @@
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedAdminSessionController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ResultController;
 
 Route::prefix('/admin')->name('admin.')->group(function () {
 
@@ -24,6 +25,12 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
         Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+
+        // Results
+        Route::prefix('/results')->controller(ResultController::class)->name('results.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+        });
 
     });
 });
