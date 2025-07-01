@@ -5,9 +5,9 @@
  */
 
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Auth\AuthenticatedAdminSessionController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ResultController;
 
 Route::prefix('/admin')->name('admin.')->group(function () {
 

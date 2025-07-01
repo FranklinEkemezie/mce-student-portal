@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ResultController;
-use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

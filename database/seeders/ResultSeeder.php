@@ -109,13 +109,68 @@ class ResultSeeder extends Seeder
 
     }
 
+    private static function parseResultsFromSampleCSV(): void
+    {
+
+        $file = Storage::disk('local')
+            ->readStream('seeders/samples/2022_2023_100LVL_HARMATTAN_SEMESTER.csv');
+
+        // Read off header
+        $headers = fgetcsv($file);
+
+        // This assumes that the grades for the courses in the
+        // file begin at the 4th column to the very end
+        $courses = array_slice($headers, 3);
+
+        foreach($courses as $course) {
+
+            // We already know the file is for:
+            // Academic Session: 2022-2023
+            // Level: 100
+            // Construct the file name, thus:
+            // [ACADEMIC SESSION]_[COURSE CODE]_RESULT.csv
+
+            // Create a file in the 'seeders' directory
+            $courseResultFilename = implode('_', explode(' ', trim($course)));
+            $courseResultFilePath = Storage::path(
+                "seeders/results/2022-2023/100/2022_2023_{$courseResultFilename}_RESULT.csv"
+            );
+
+            // Open the file to read
+            $courseResultFile = fopen($courseResultFilePath, 'w');
+
+            // Feed the header
+            fputcsv($courseResultFile, ['S/N', 'REG. NO.', 'GRADE']);
+
+            // Read the course data off the CSV and add it to the course result file
+            $counter = 0;
+            while ($line = fgetcsv($file)) {
+
+                $row = array_combine($headers, $line);
+
+                $regNo = $row['REG. NO.'];
+                $grade = $row[$course];
+                $sNo = ++$counter;
+
+                fputcsv($courseResultFile, [$sNo, $regNo, $grade]);
+            }
+
+            // Reset file pointer and read off headers
+            rewind($file);
+            fgetcsv($file);
+
+        }
+    }
+
     /**
      * Run the database seeds.
+     * @throws Exception
      */
     public function run(): void
     {
         //
 
+        self::parseResultsFromSampleCSV();
 
         self::seedResultsFromCSV();
     }

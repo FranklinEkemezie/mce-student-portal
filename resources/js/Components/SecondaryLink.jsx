@@ -1,5 +1,6 @@
 import {Link} from "@inertiajs/react";
 import SecondaryButton from "@/Components/SecondaryButton.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function SecondaryLink({
     className = '',

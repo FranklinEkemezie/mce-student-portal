@@ -7,7 +7,7 @@ export default function StudentLayout({ header, children }) {
             navLinks={[
                 {title: 'Dashboard', name: 'dashboard'},
                 {title: 'Profile', name: 'profile.edit'},
-                {title: 'Results', name: 'dashboard'},
+                {title: 'Results', name: 'results.index'},
             ]}
             header={header}
             dropdownLinks={[

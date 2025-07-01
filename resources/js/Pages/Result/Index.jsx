@@ -1,5 +1,6 @@
 import AdminLayout from '@/Layouts/AdminLayout'
 import { Head } from '@inertiajs/react'
+import PrimaryLink from "@/Components/SecondaryLink.jsx";
 import SecondaryLink from "@/Components/SecondaryLink.jsx";
 
 export default function Index({ results }) {
@@ -15,8 +16,11 @@ export default function Index({ results }) {
                 <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                     <div className="bg-white shadow-sm sm:rounded-lg">
                         <div className="p-4 sm:p-6 text-gray-900">
-                            <div>
+                            <div className="flex items-center justify-between">
                                 <h2 className="text-xl font-bold">Published Results</h2>
+                                <div>
+                                    <PrimaryLink href={route('admin.results.create')}>Upload Result</PrimaryLink>
+                                </div>
                             </div>
 
                             <div className="mt-6 overflow-y-auto">
