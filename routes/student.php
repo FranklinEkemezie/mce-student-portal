@@ -26,6 +26,8 @@ Route::middleware('auth:student')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/results', [ResultController::class, 'index'])->name('results.index');
+
+    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 });
 
 Route::middleware('auth:admin')->group(function () {

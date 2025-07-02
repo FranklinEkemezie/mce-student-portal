@@ -6,7 +6,6 @@ export default function StudentLayout({ header, children }) {
         <AuthenticatedLayout
             navLinks={[
                 {title: 'Dashboard', name: 'dashboard'},
-                {title: 'Profile', name: 'profile.edit'},
                 {title: 'Results', name: 'results.index'},
             ]}
             header={header}

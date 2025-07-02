@@ -6,13 +6,7 @@ import StudentLayout from "@/Layouts/StudentLayout.jsx";
 export default function Edit({ mustVerifyEmail, status }) {
 
     return (
-        <StudentLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profile
-                </h2>
-            }
-        >
+        <StudentLayout header="Profile">
             <Head title="Profile" />
 
             <div className="py-12">

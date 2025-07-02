@@ -1,8 +1,17 @@
 import StudentLayout from '@/Layouts/StudentLayout.jsx'
 import { Head } from '@inertiajs/react'
 import SecondaryLink from "@/Components/SecondaryLink.jsx";
+import useResult from "@/hooks/useResult.js";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index({ results }) {
+
+    const {
+        processResult, getGrade, getRemark, getTotalScore
+    } = useResult();
+
+    const { TGP, GNU, CGPA } = processResult(results);
+
     return (
         <StudentLayout
             header="Results"
@@ -12,9 +21,12 @@ export default function Index({ results }) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                     <div className="bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-4 sm:p-6 text-gray-900">
-                            <div>
-                                <h2 className="text-xl font-bold">Results</h2>
+                        <div className="p-4 sm:p-6 text-gray-">
+                            <div className="flex items-center justify-between border-b pb-4">
+                                <h2 className="text-xl font-bold">📜 Results</h2>
+                                <div>
+                                    <PrimaryButton>🖨 Print</PrimaryButton>
+                                </div>
                             </div>
 
                             <div className="mt-6 overflow-y-auto">
@@ -31,16 +43,20 @@ export default function Index({ results }) {
                                         <th className="text-start px-2 py-4">Exam</th>
                                         <th className="text-start px-2 py-4">Total</th>
                                         <th className="text-start px-2 py-4">Grade</th>
+                                        <th className="text-start px-2 py-4">Remark</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {
                                         results.map(([course, result], index) => {
 
-                                            const { id, unit: courseUnit, code: courseCode } = course;
+                                            const {id, unit: courseUnit, code: courseCode} = course;
 
                                             return (
-                                                <tr key={id} className="border-b hover:bg-gray-50">
+                                                <tr key={id} className={
+                                                    `border-b hover:bg-gray-50
+                                                    ${getGrade(result) === 'F' && 'text-red-500'}`
+                                                }>
                                                     <td className="p-2">{index + 1}</td>
                                                     <td className="p-2">
                                                         {courseCode}
@@ -49,13 +65,36 @@ export default function Index({ results }) {
                                                     <td className="p-2">{result['TEST'] || '-'}</td>
                                                     <td className="p-2">{result['LAB'] || '-'}</td>
                                                     <td className="p-2">{result['EXAM'] || '-'}</td>
-                                                    <td className="p-2">{result['TOTAL'] || '-'}</td>
-                                                    <td className="p-2 text-center">{result['GRADE'] || '-'}</td>
+                                                    <td className="p-2">{getTotalScore(result)}</td>
+                                                    <td className="p-2 text-center font-semibold">{getGrade(result)}</td>
+                                                    <td className="p-2">{getRemark(result)}</td>
                                                 </tr>
                                             )
                                         })
                                     }
                                     </tbody>
+                                    <tfoot className="border-b-2">
+                                        <tr>
+                                            <td colSpan={6}></td>
+                                            <td className="text-end px-2 py-1 pt-4">TGP</td>
+                                            <td className="font-semibold px-2 py-1 pt-4">{TGP}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={6}></td>
+                                            <td className="text-end px-2 py-1">GNU</td>
+                                            <td className="font-semibold px-2 py-1">{GNU}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={6}></td>
+                                            <td className="text-end px-2 py-1">Semester CGPA</td>
+                                            <td className="font-semibold px-2 py-1">{CGPA}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={6}></td>
+                                            <td className="text-end px-2 py-1 pb-4">CGPA</td>
+                                            <td className="font-semibold px-2 py-1 pb-4">{CGPA}</td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

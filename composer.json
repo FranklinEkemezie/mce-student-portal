@@ -63,6 +63,10 @@
         "dev-server":  [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#fdba74\" \"php artisan serve\" \"npm run dev\" --names=server,vite"
+        ],
+        "dev-server-expose":  [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#fdba74\" \"php artisan serve --host=0.0.0.0\" \"npm run dev -- --host=192.168.251.59\" --names=server,vite"
         ]
     },
     "extra": {
