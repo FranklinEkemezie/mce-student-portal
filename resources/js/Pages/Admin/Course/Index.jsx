@@ -75,12 +75,12 @@ export default function Courses({ courses }) {
 
         // Search by course title, course code or department
         const searchResults = searchCoursesByKeyword(courses, keyword, (course) => {
-           const {
-               title, code,
-               department: deptCode, name: deptName
-           } = course;
+            const {
+                title, code,
+                department: deptCode, name: deptName
+            } = course;
 
-           return [title, code, deptCode, deptName];
+            return [title, code, deptCode, deptName];
         });
 
         setDisplayedCourses(searchResults);
@@ -108,7 +108,7 @@ export default function Courses({ courses }) {
                                             value={searchInputValue}
                                         />
                                     </div>
-                                    <PrimaryLink href="">Add Course</PrimaryLink>
+                                    <PrimaryLink href={route('admin.courses.create')}>Add Courses</PrimaryLink>
                                 </div>
                             </div>
 
@@ -152,59 +152,59 @@ export default function Courses({ courses }) {
                                         <th className="text-start px-2 py-2 border-r">S/N</th>
                                         <th className="text-start px-2 py-4 border-r">
                                             <div className="flex items-center justify-between">
-                                                    Title
-                                                    <button className="p-1 rounded hover:bg-gray-200">&uarr;</button>
-                                                </div>
-                                            </th>
-                                            <th className="text-start px-2 py-4 border-r">
-                                                <div className="flex items-center justify-between">
-                                                    Course Code
-                                                    <Select
-                                                        options={[
-                                                            semesterOptions,
-                                                            levelOptions
-                                                        ]}
-                                                        onChange={(selectedOption) => {
-                                                            const selectedSemesters = [];
-                                                            const selectedLevels = [];
+                                                Title
+                                                <button className="p-1 rounded hover:bg-gray-200">&uarr;</button>
+                                            </div>
+                                        </th>
+                                        <th className="text-start px-2 py-4 border-r">
+                                            <div className="flex items-center justify-between">
+                                                Course Code
+                                                <Select
+                                                    options={[
+                                                        semesterOptions,
+                                                        levelOptions
+                                                    ]}
+                                                    onChange={(selectedOption) => {
+                                                        const selectedSemesters = [];
+                                                        const selectedLevels = [];
 
-                                                            selectedOption.forEach((option) => {
-                                                                if (Object.keys(semesterOptions).includes(option)) {
-                                                                    selectedSemesters.push(option);
-                                                                } else  {
-                                                                    selectedLevels.push(option);
-                                                                }
-                                                            });
+                                                        selectedOption.forEach((option) => {
+                                                            if (Object.keys(semesterOptions).includes(option)) {
+                                                                selectedSemesters.push(option);
+                                                            } else  {
+                                                                selectedLevels.push(option);
+                                                            }
+                                                        });
 
-                                                            setSelectedSemesters(selectedSemesters);
-                                                            setSelectedLevels(selectedLevels);
-                                                        }}
-                                                        className="font-normal"
-                                                    />
-                                                </div>
-                                            </th>
-                                            <th className="text-start px-2 py-4 border-r">
-                                                <div className="flex items-center justify-between">
-                                                    Unit
-                                                    <Select
-                                                        options={unitOptions}
-                                                        onChange={(selectedUnits) => setSelectedUnits((selectedUnits))}
-                                                        className="font-normal"
-                                                    />
-                                                </div>
-                                            </th>
-                                            <th className="text-start px-2 py-4 border-r">
-                                                <div className="flex items-center justify-between">
-                                                    Department
-                                                    <Select
-                                                        options={departmentOptions}
-                                                        onChange={(selectedDepartments) => setSelectedDepartments((selectedDepartments))}
-                                                        className="font-normal"
-                                                    />
-                                                </div>
-                                            </th>
-                                            <th className="text-start px-2 py-4 border-r">Actions</th>
-                                        </tr>
+                                                        setSelectedSemesters(selectedSemesters);
+                                                        setSelectedLevels(selectedLevels);
+                                                    }}
+                                                    className="font-normal"
+                                                />
+                                            </div>
+                                        </th>
+                                        <th className="text-start px-2 py-4 border-r">
+                                            <div className="flex items-center justify-between">
+                                                Unit
+                                                <Select
+                                                    options={unitOptions}
+                                                    onChange={(selectedUnits) => setSelectedUnits((selectedUnits))}
+                                                    className="font-normal"
+                                                />
+                                            </div>
+                                        </th>
+                                        <th className="text-start px-2 py-4 border-r">
+                                            <div className="flex items-center justify-between">
+                                                Department
+                                                <Select
+                                                    options={departmentOptions}
+                                                    onChange={(selectedDepartments) => setSelectedDepartments((selectedDepartments))}
+                                                    className="font-normal"
+                                                />
+                                            </div>
+                                        </th>
+                                        <th className="text-start px-2 py-4 border-r">Actions</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                     {

@@ -24,7 +24,9 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+        // Courses
         Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+        Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
 
         // Results
         Route::prefix('/results')->controller(ResultController::class)->name('results.')->group(function () {

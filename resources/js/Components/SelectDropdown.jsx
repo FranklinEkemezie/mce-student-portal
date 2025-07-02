@@ -53,6 +53,7 @@ export function Select({ options, onChange, className }) {
     return (
         <div className="inline-block space-y-2 relative">
             <button
+                type="button"
                 className="inline-flex p-1 rounded space-x-8 cursor-default hover:bg-gray-200 text-sm"
                 onClick={() => {setShowDropdown((prevState) => ! prevState)}}
             >
