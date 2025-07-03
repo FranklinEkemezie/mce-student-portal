@@ -27,4 +27,10 @@ class CourseController extends Controller
             'courses'       => Course::all()
         ]);
     }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+
+    }
 }

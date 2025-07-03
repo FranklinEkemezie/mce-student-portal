@@ -1,54 +1,39 @@
 import Layout from '@/Layouts/AdminLayout'
 import {Head, useForm} from '@inertiajs/react'
-import React, {useState} from "react";
+import React from "react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import CreateCourseForm from "@/Partials/CreateCourseForm.jsx";
 import SecondaryButton from "@/Components/SecondaryButton.jsx";
 
 export default function Create({ departments, courses }) {
 
-    const [ courseFormIds, setCourseFormIds ] = useState([]);
-
-    const [ defaultCourseFormData, setDefaultCourseFormData ] = useState({});
-    const [ courseFormsData, setCourseFormsData ] = useState({});
-
-    const {  post, setData } = useForm({
-        title: '', unit: '',
+    const initialCourseFormData = {
+        title: '', unit: '', code: '',
         level: '', semester: '',
-        code: '', prerequisites: ''
-    });
+        department: '', prerequisites: ''
+    };
+    const { data, post, setData} = useForm({default: initialCourseFormData});
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const formsData = {'default': defaultCourseFormData, ...courseFormsData};
-        for (const courseFormId in formsData) {
-            const {
-                title, unit,
-                level, semester,
-                courseCodeName, courseCodeDigit,
-                prerequisites
-            } = formsData[courseFormId];
-
-            const courseCode = `${courseCodeName} ${courseCodeDigit}`;
-
-            setData({
-                title, unit, level, semester, prerequisites, code: courseCode
-            });
-
-            post(route('admin.courses'));
-        }
-
+        post(route('admin.courses.store'));
     }
 
-    const updateCourseFormData = (courseFormId, updatedCourseFormData) => {
-
-        setCourseFormsData((prevCourseFormsData) => {
-
+    const updateCourseFormData = (courseFormId, key, value) => {
+        setData((prevCourseFormsData) => {
+            const courseFormData = prevCourseFormsData[courseFormId];
             return ({
                 ...prevCourseFormsData,
-                [courseFormId]: updatedCourseFormData
+                [courseFormId]: {...courseFormData, [key]: value}
             });
+        });
+    }
+
+    const deleteCourseEntry = (courseFormId) => {
+        setData((previousData) => {
+            delete previousData[courseFormId];
+            return {...previousData};
         });
     }
 
@@ -69,37 +54,18 @@ export default function Create({ departments, courses }) {
 
                             <div className="space-y-6">
 
-                                {/* Default course form   */}
-                                <CreateCourseForm
-                                    courseFormId='default'
-                                    courses={courses}
-                                    departments={departments}
-                                    canDelete={false}
-                                    updateCourseFormData={(courseFormId, updatedCourseFormData) => {
-                                        setDefaultCourseFormData({...updatedCourseFormData});
-                                    }}
-                                />
-
-                                {/* Added course forms  */}
                                 {
-                                    courseFormIds.map(courseFormId => {
+                                    Object.entries(data).map(([courseFormId, courseFormData]) => {
                                         return (
                                             <CreateCourseForm
                                                 key={courseFormId}
                                                 courseFormId={courseFormId}
+                                                courseFormData={courseFormData}
                                                 courses={courses}
                                                 departments={departments}
-                                                handleDeleteButtonClick={courseFormId => {
-                                                    setCourseFormIds((prevCourseFormIds) => [
-                                                        ...prevCourseFormIds.filter(id => id !== courseFormId)
-                                                    ]);
-
-                                                    setCourseFormsData((prevCourseFormsData) => {
-                                                        delete prevCourseFormsData[courseFormId];
-                                                        return {...prevCourseFormsData};
-                                                    });
-                                                }}
+                                                handleDeleteButtonClick={deleteCourseEntry}
                                                 updateCourseFormData={updateCourseFormData}
+                                                canDelete={courseFormId !== 'default'}
                                             />
                                         );
                                     })
@@ -109,12 +75,11 @@ export default function Create({ departments, courses }) {
                                     <div>
                                         <SecondaryButton onClick={(e) => {
                                             const courseFormId = Date.now();
-                                            setCourseFormIds([...courseFormIds, courseFormId]);
-                                            setCourseFormsData((prevState) => ({
-                                                ...prevState, [courseFormId]: null
-                                            }));
+                                            setData(previousData => {
+                                                return {...previousData, [courseFormId]: initialCourseFormData}
+                                            });
                                         }}>
-                                            Add Another Course
+                                            Add Course Entry
                                         </SecondaryButton>
                                     </div>
                                     <div>

@@ -27,6 +27,7 @@ Route::prefix('/admin')->name('admin.')->group(function () {
         // Courses
         Route::get('/courses', [CourseController::class, 'index'])->name('courses');
         Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+        Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
 
         // Results
         Route::prefix('/results')->controller(ResultController::class)->name('results.')->group(function () {

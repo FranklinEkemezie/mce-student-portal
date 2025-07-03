@@ -1,13 +1,13 @@
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import {Select} from "@/Components/SelectDropdown.jsx";
-import React, {useEffect} from "react";
-import {useForm} from "@inertiajs/react";
+import React from "react";
 import DangerButton from "@/Components/DangerButton.jsx";
 
 export default function CreateCourseForm(
     {
         courseFormId,
+        courseFormData,
         canDelete=true,
         handleDeleteButtonClick,
         courses,
@@ -16,19 +16,22 @@ export default function CreateCourseForm(
     }) {
 
     const {
-        data, setData
-    } = useForm({
-        title: '',                  courseCodeName: '',
-        courseCodeDigit: '',        unit: 1,
-        level: 100,                 semester: '',
-        department: '',             prerequisites: ''
-    });
+        title, unit, code, level, semester,
+        department, prerequisites
+    } = courseFormData;
 
     const setCourseFormData = (key, value) => {
-        let updatedData = {...data, [key]: value};
+        updateCourseFormData(courseFormId, key, value);
+    }
 
-        setData(() => updatedData);
-        updateCourseFormData(courseFormId, updatedData);
+    const setCourseCodeName = (courseCodeName) => {
+        const newCourseCode = [courseCodeName, code.split(' ')[1] || ''];
+        setCourseFormData('code', newCourseCode.join(' '))
+    }
+
+    const setCourseCodeDigits = (courseCodeDigits) => {
+        const newCourseCode = [code.split(' ')[0] || '', courseCodeDigits];
+        setCourseFormData('code', newCourseCode.join(' '));
     }
 
     const getCourseFormInputId = (id) => `${courseFormId}-${id}`;
@@ -40,7 +43,7 @@ export default function CreateCourseForm(
 
                 <div className="flex items-center justify-between my-2 py-2 border-b border-dashed">
                     <h5 className="text-lg font-semibold">
-                        Course Form {data.title && `(${data.title})`}
+                        Course Form {title && `(${title})`}
                     </h5>
                     {canDelete && (
                         <DangerButton onClick={() => handleDeleteButtonClick(courseFormId)}>
@@ -56,7 +59,7 @@ export default function CreateCourseForm(
                         <TextInput
                             id={getCourseFormInputId('title')}
                             className="mt-1 block w-full"
-                            value={data.title}
+                            value={title}
                             onChange={(e) => setCourseFormData('title', e.target.value)}
                             placeholder="Engineering Mathematics I"
                             autoComplete="title"
@@ -72,21 +75,17 @@ export default function CreateCourseForm(
                                     id={getCourseFormInputId('code-name')}
                                     className="mt-1 block w-full"
                                     placeholder="ENG"
-                                    value={data.courseCodeName}
-                                    onChange={(e) => setCourseFormData(
-                                        'courseCodeName', e.target.value.toUpperCase()
-                                    )}
-                                    autoComplete="title"
+                                    value={code.split(' ')[0] || ''}
+                                    onChange={(e) => setCourseCodeName(e.target.value)}
+                                    autoComplete="number"
                                     maxLength={3}
                                     minLength={3}
                                 />
                                 <TextInput
-                                    id="code-digit"
+                                    id="code-digits"
                                     className="mt-1 block w-full"
-                                    value={data.courseCodeDigit}
-                                    onChange={(e) => setCourseFormData(
-                                        'courseCodeDigit', e.target.value
-                                    )}
+                                    value={code.split(' ')[1] || ''}
+                                    onChange={(e) => setCourseCodeDigits(e.target.value)}
                                     placeholder="305"
                                     autoComplete="title"
                                     maxLength={3}
@@ -188,7 +187,7 @@ export default function CreateCourseForm(
                             <div
                                 className="flex items-center justify-between border border-gray-300 rounded-md p-2 mt-1">
                                 <div className="opacity-60">
-                                    {data.prerequisites.replaceAll(',', ', ')}
+                                    {prerequisites.replaceAll(',', ', ')}
                                 </div>
                                 <Select
                                     id={getCourseFormInputId('prerequisites')}
