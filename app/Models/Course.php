@@ -14,8 +14,19 @@ class Course extends Model
     protected $fillable = [
         'code',
         'title',
-        'unit'
+        'unit',
+        'prerequisites'
     ];
+
+    public function getLevelAttribute(): int
+    {
+        return intval(explode(' ', $this->code)[1][0]) * 100;
+    }
+
+    public function getSemesterAttribute(): string
+    {
+        return intval(explode(' ', $this->code)[1][-1]) % 2 ? 'rain' : 'harmattan';
+    }
 
     /**
      * The department in charge of the course

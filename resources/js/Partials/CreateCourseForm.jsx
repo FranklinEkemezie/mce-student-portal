@@ -3,6 +3,7 @@ import TextInput from "@/Components/TextInput.jsx";
 import {Select} from "@/Components/SelectDropdown.jsx";
 import React from "react";
 import DangerButton from "@/Components/DangerButton.jsx";
+import InputError from "@/Components/InputError.jsx";
 
 export default function CreateCourseForm(
     {
@@ -12,7 +13,8 @@ export default function CreateCourseForm(
         handleDeleteButtonClick,
         courses,
         departments,
-        updateCourseFormData
+        updateCourseFormData,
+        courseFormErrors
     }) {
 
     const {
@@ -25,12 +27,12 @@ export default function CreateCourseForm(
     }
 
     const setCourseCodeName = (courseCodeName) => {
-        const newCourseCode = [courseCodeName, code.split(' ')[1] || ''];
+        const newCourseCode = [courseCodeName.toUpperCase(), code.split(' ')[1] || ''];
         setCourseFormData('code', newCourseCode.join(' '))
     }
 
     const setCourseCodeDigits = (courseCodeDigits) => {
-        const newCourseCode = [code.split(' ')[0] || '', courseCodeDigits];
+        const newCourseCode = [(code.split(' ')[0] || '').toUpperCase(), courseCodeDigits];
         setCourseFormData('code', newCourseCode.join(' '));
     }
 
@@ -64,6 +66,8 @@ export default function CreateCourseForm(
                             placeholder="Engineering Mathematics I"
                             autoComplete="title"
                         />
+
+                        <InputError message={courseFormErrors?.title} className="mt-2" />
                     </div>
 
                     <div className="grid md:grid-cols-4 gap-2">
@@ -92,6 +96,8 @@ export default function CreateCourseForm(
                                     minLength={3}
                                 />
                             </div>
+
+                            <InputError message={courseFormErrors?.code} className="mt-2" />
                         </div>
 
                         <div>
@@ -112,6 +118,9 @@ export default function CreateCourseForm(
                                     ))
                                 }
                             </select>
+
+                            <InputError message={courseFormErrors?.unit} className="mt-2" />
+
                         </div>
 
                         <div>
@@ -132,6 +141,8 @@ export default function CreateCourseForm(
                                     ))
                                 }
                             </select>
+
+                            <InputError message={courseFormErrors?.level} className="mt-2" />
                         </div>
 
                         <div>
@@ -148,13 +159,15 @@ export default function CreateCourseForm(
                                     Object.entries({
                                         'harmattan': 'Harmattan Semester',
                                         'rain': 'Rain Semester'
-                                    }).map(([key, value], i) => (
-                                        <option key={key} value={value}>
+                                    }).map(([key, value]) => (
+                                        <option key={key} value={key}>
                                             {value}
                                         </option>
                                     ))
                                 }
                             </select>
+
+                            <InputError message={courseFormErrors?.semester} className="mt-2" />
                         </div>
 
                     </div>
@@ -179,6 +192,8 @@ export default function CreateCourseForm(
                                 }
                             </select>
 
+                            <InputError message={courseFormErrors?.department} className="mt-2" />
+
                         </div>
 
                         <div>
@@ -201,6 +216,9 @@ export default function CreateCourseForm(
                                     )}
                                 />
                             </div>
+
+                            <InputError message={courseFormErrors?.prerequisites} className="mt-2" />
+
                         </div>
                     </div>
                 </div>

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCourseRequest;
 use App\Models\Course;
 use App\Models\Department;
-use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
@@ -28,9 +28,25 @@ class CourseController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreCourseRequest $request)
     {
-        dd($request->all());
 
+        $courses = $request->input('courses');
+        foreach ($courses as $course) {
+
+            $department = Department::query()
+                ->where('code', $course['department'])
+                ->first();
+
+            $department->courses()->create([
+                'title' => $course['title'],
+                'code'  => $course['code'],
+                'unit'  => $course['unit'],
+                'prerequisites' => $course['prerequisites']
+            ]);
+
+        }
+
+        return redirect()->route('admin.courses');
     }
 }

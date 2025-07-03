@@ -1,6 +1,6 @@
 import Layout from '@/Layouts/AdminLayout'
 import {Head, useForm} from '@inertiajs/react'
-import React from "react";
+import React, {useEffect} from "react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import CreateCourseForm from "@/Partials/CreateCourseForm.jsx";
 import SecondaryButton from "@/Components/SecondaryButton.jsx";
@@ -12,12 +12,21 @@ export default function Create({ departments, courses }) {
         level: '', semester: '',
         department: '', prerequisites: ''
     };
-    const { data, post, setData} = useForm({default: initialCourseFormData});
+    const { data, post, errors, setData} = useForm({default: initialCourseFormData});
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        console.log(data);
+
         post(route('admin.courses.store'));
+    }
+
+    const courseFormErrors = (courseFormId) => {
+        const { courseFormErrors } = errors;
+        if (! courseFormErrors) return null;
+
+        return courseFormErrors[courseFormId];
     }
 
     const updateCourseFormData = (courseFormId, key, value) => {
@@ -43,7 +52,6 @@ export default function Create({ departments, courses }) {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-
                     <div className="bg-white p-4 shadow rounded sm:rounded-lg sm:p-8">
 
                         <div className="flex items-center justify-between pb-4 border-b">
@@ -66,6 +74,7 @@ export default function Create({ departments, courses }) {
                                                 handleDeleteButtonClick={deleteCourseEntry}
                                                 updateCourseFormData={updateCourseFormData}
                                                 canDelete={courseFormId !== 'default'}
+                                                courseFormErrors={courseFormErrors(courseFormId)}
                                             />
                                         );
                                     })
@@ -73,7 +82,7 @@ export default function Create({ departments, courses }) {
 
                                 <div className="flex justify-between">
                                     <div>
-                                        <SecondaryButton onClick={(e) => {
+                                        <SecondaryButton onClick={() => {
                                             const courseFormId = Date.now();
                                             setData(previousData => {
                                                 return {...previousData, [courseFormId]: initialCourseFormData}
