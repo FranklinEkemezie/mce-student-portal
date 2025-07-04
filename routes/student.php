@@ -6,6 +6,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\Student\CourseController;
 use App\Http\Controllers\StudentController;
 use \Illuminate\Support\Facades\Route;
 
