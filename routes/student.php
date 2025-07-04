@@ -29,6 +29,7 @@ Route::middleware('auth:student')->group(function () {
     Route::get('/results', [ResultController::class, 'index'])->name('results.index');
 
     Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/register', [CourseController::class, 'register'])->name('courses.register');
 });
 
 Route::middleware('auth:admin')->group(function () {

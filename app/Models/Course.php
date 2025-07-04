@@ -25,7 +25,7 @@ class Course extends Model
 
     public function getSemesterAttribute(): string
     {
-        return intval(explode(' ', $this->code)[1][-1]) % 2 ? 'rain' : 'harmattan';
+        return (intval(explode(' ', $this->code)[1][-1]) % 2) === 0 ? 'rain' : 'harmattan';
     }
 
     /**

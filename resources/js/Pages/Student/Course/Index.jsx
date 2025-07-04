@@ -1,6 +1,5 @@
 import Layout from '@/Layouts/StudentLayout'
 import { Head } from '@inertiajs/react'
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import PrimaryLink from "@/Components/PrimaryLink.jsx";
 import SecondaryLink from "@/Components/SecondaryLink.jsx";
 
@@ -22,9 +21,9 @@ export default function Index({ registeredCoursesInfo }) {
                     <div className="bg-white shadow-sm sm:rounded-lg">
                         <div className="p-4 sm:p-6 text-gray-">
                             <div className="flex items-center justify-between border-b pb-4">
-                                <h2 className="text-xl font-bold">📜 Courses</h2>
+                                <h2 className="text-xl font-bold">📚 Courses</h2>
                                 <div>
-                                    <PrimaryLink>Register Courses</PrimaryLink>
+                                    <PrimaryLink href={route('courses.register')}>Register Courses</PrimaryLink>
                                 </div>
                             </div>
 

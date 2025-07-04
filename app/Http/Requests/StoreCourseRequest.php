@@ -85,27 +85,30 @@ class StoreCourseRequest extends FormRequest
                     );
                 }
 
-                // Ensure prerequisites courses come before the current course
-                $prerequisitesCourses = explode(',', $course['prerequisites']);
-                $invalidPrerequisitesCourses = [];
-                foreach ($prerequisitesCourses as $prerequisitesCourseCode) {
+                // Ensure prerequisites courses (if provided) come before the current course
+                if (! empty(trim($course['prerequisites']))) {
 
-                    $prerequisitesCourse = Course::query()
-                        ->where('code', $prerequisitesCourseCode)
-                        ->first();
+                    $prerequisitesCourses = explode(',', $course['prerequisites']);
+                    $invalidPrerequisitesCourses = [];
+                    foreach ($prerequisitesCourses as $prerequisitesCourseCode) {
 
-                    if ($prerequisitesCourse->level >= (int) $course['level']) {
-                        $invalidPrerequisitesCourses[] = $prerequisitesCourseCode;
+                        $prerequisitesCourse = Course::query()
+                            ->where('code', $prerequisitesCourseCode)
+                            ->first();
+
+                        if ($prerequisitesCourse->level >= (int) $course['level']) {
+                            $invalidPrerequisitesCourses[] = $prerequisitesCourseCode;
+                        }
                     }
-                }
 
-                if (! empty($invalidPrerequisitesCourses)) {
-                    $validator->errors()->add(
-                        "courses.$index.prerequisites",
-                        "The following courses: " .
+                    if (! empty($invalidPrerequisitesCourses)) {
+                        $validator->errors()->add(
+                            "courses.$index.prerequisites",
+                            "The following courses: " .
                             join(', ', $invalidPrerequisitesCourses) .
                             " cannot be prerequisites for $courseCode"
-                    );
+                        );
+                    }
                 }
 
             }
