@@ -28,7 +28,7 @@ class RegisterCourseRequest extends FormRequest
         return [
             'courses'   => ['required', 'array'],
             'courses.*' => ['required', 'exists:courses,code'],
-            'semester'  => ['required', 'in:harmattan,semester'],
+            'semester'  => ['required', 'in:harmattan,rain'],
             'session'   => ['required', 'regex:/^\d{4}-\d{4}$/']
         ];
     }
@@ -45,7 +45,7 @@ class RegisterCourseRequest extends FormRequest
                 return $total + (int) $course->unit;
             }, 0);
 
-            [$minTotalGradePoint, $maxTotalGradePoint] = [21, 24];
+            [$minTotalGradePoint, $maxTotalGradePoint] = [18, 24];
             if ($totalGradePoint < $minTotalGradePoint) {
                 $validator->errors()->add('courses',
                     "Total grade point [$totalGradePoint] is below minimum grade point of $minTotalGradePoint"
