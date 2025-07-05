@@ -20,7 +20,7 @@ export default function RegisterForm({ }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        get(route('courses.register'));
+        get(route('registered-courses.create'));
     }
 
     return (
@@ -36,7 +36,7 @@ export default function RegisterForm({ }) {
                             <div className="flex items-center justify-between border-b pb-4">
                                 <h2 className="text-xl font-bold">📝 Register Courses</h2>
                                 <div>
-                                    <DangerLink href={route('courses.index')}>Cancel</DangerLink>
+                                    <DangerLink href={route('registered-courses.index')}>Cancel</DangerLink>
                                 </div>
                             </div>
 

@@ -6,7 +6,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResultController;
-use App\Http\Controllers\Student\CourseController;
+use App\Http\Controllers\Student\RegisteredCourseController;
 use App\Http\Controllers\StudentController;
 use \Illuminate\Support\Facades\Route;
 
@@ -28,8 +28,12 @@ Route::middleware('auth:student')->group(function () {
 
     Route::get('/results', [ResultController::class, 'index'])->name('results.index');
 
-    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-    Route::get('/courses/register', [CourseController::class, 'register'])->name('courses.register');
+    // Course registration
+    Route::prefix('/courses')->controller(RegisteredCourseController::class)->name('registered-courses.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/register', 'create')->name('create');
+        Route::post('/register', 'store')->name('store');
+    });
 });
 
 Route::middleware('auth:admin')->group(function () {

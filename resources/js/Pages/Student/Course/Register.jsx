@@ -3,17 +3,21 @@ import {Head, useForm} from '@inertiajs/react'
 import DangerLink from "@/Components/DangerLink.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import React from "react";
+import Toast from "@/Components/Toast.jsx";
+import ToastMessage from "@/Components/ToastMessage.jsx";
 
-export default function Register({ courses }) {
+export default function Register({ courses, semester, session }) {
 
-    const { data, setData, processing } = useForm({
-        courses: []
+    const { data, setData, post, errors, processing } = useForm({
+        courses: courses.filter(course => course.is_registered).map(course => course.code),
+        semester,
+        session
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(data);
+        post(route('registered-courses.store'))
     }
 
     const getTotalSelectedCourseUnits = () => {
@@ -38,6 +42,8 @@ export default function Register({ courses }) {
         }
     }
 
+    console.log(errors);
+
     return (
         <Layout
             header="Register Courses"
@@ -54,11 +60,17 @@ export default function Register({ courses }) {
                                     ({getTotalSelectedCourseUnits()} of 24 units)
                                 </h2>
                                 <div>
-                                    <DangerLink href={route('courses.register')}>Cancel</DangerLink>
+                                    <DangerLink href={route('registered-courses.create')}>Cancel</DangerLink>
                                 </div>
                             </div>
 
                             <div className="mt-6">
+
+                                {errors.courses && (
+                                    <div className="py-2 text-red-500">
+                                        {errors.courses}
+                                    </div>
+                                )}
 
                                 <form onSubmit={handleSubmit}>
 
@@ -77,7 +89,7 @@ export default function Register({ courses }) {
                                                 </thead>
                                                 <tbody>
                                                 {
-                                                    courses.map(({ code, title, unit }, index) => {
+                                                    courses.map(({ code, title, unit, is_registered }, index) => {
 
                                                         return (
                                                             <tr key={code} className="border-b hover:bg-gray-50">
@@ -88,6 +100,7 @@ export default function Register({ courses }) {
                                                                         value={code}
                                                                         className="rounded-sm"
                                                                         onChange={handleCourseSelectCheckbox}
+                                                                        checked={data.courses.includes(code)}
                                                                     />
                                                                 </td>
                                                                 <td className="p-2">{code}</td>

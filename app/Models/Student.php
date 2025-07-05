@@ -7,6 +7,7 @@ use App\Traits\BelongsToUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Student extends Model implements Authenticatable
 {
@@ -24,6 +25,12 @@ class Student extends Model implements Authenticatable
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function registeredCourses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'course_registrations')
+            ->withPivot(['session']);
     }
 
 

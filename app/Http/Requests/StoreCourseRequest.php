@@ -96,7 +96,21 @@ class StoreCourseRequest extends FormRequest
                             ->where('code', $prerequisitesCourseCode)
                             ->first();
 
-                        if ($prerequisitesCourse->level >= (int) $course['level']) {
+                        if ($prerequisitesCourse->level > (int) $course['level']) {
+                            $invalidPrerequisitesCourses[] = $prerequisitesCourseCode;
+                        }
+
+                        $semesterPriority = [
+                            'harmattan' => 1,   // 'harmattan' semester comes first,
+                            'rain'      => 2    // then followed by 'rain' semester
+                        ];
+                        if (
+                            $prerequisitesCourse->level === (int) $course['level'] &&
+                            // the logic is that, if the prerequisite course is taken in
+                            // the same level, then it must be taken in the prior semester
+                            $semesterPriority[$prerequisitesCourse->semester] >=
+                            $semesterPriority[$course['semester']]
+                        ) {
                             $invalidPrerequisitesCourses[] = $prerequisitesCourseCode;
                         }
                     }

@@ -23,7 +23,7 @@ export default function Index({ registeredCoursesInfo }) {
                             <div className="flex items-center justify-between border-b pb-4">
                                 <h2 className="text-xl font-bold">📚 Courses</h2>
                                 <div>
-                                    <PrimaryLink href={route('courses.register')}>Register Courses</PrimaryLink>
+                                    <PrimaryLink href={route('registered-courses.create')}>Register Courses</PrimaryLink>
                                 </div>
                             </div>
 
