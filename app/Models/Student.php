@@ -28,14 +28,26 @@ class Student extends Model implements Authenticatable
         return $this->belongsTo(User::class);
     }
 
-    public function registeredCourses(): BelongsToMany
+    public function registeredCourses(?string $session=null, ?string $semester=null): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'course_registrations')
+        $relationship =  $this->belongsToMany(Course::class, 'course_registrations')
             ->withPivot(['session']);
+        if ($session) {
+            $relationship = $relationship->where('session', $session);
+        }
+        if ($semester) {
+            // TODO: Filter registered courses by semester
+//            $relationship = $relationship->whereAttachedTo(Course::class)
+        }
+
+        return $relationship;
     }
 
     /**
      * Returns a list of registered courses grouped by semester per session.
+     * @param array $extras An associative array of extra field to add to the group. The key
+     * should be the label or key and the value may be callable (accepting the list of courses, the current
+     * session, and the semester) or any value.
      * @return Collection
      */
     public function groupedRegisteredCourses(array $extras=[]): Collection
@@ -48,7 +60,7 @@ class Student extends Model implements Authenticatable
                 $extraValues = [];
                 foreach ($extras as $key => $extra) {
                     $extraValues[$key] = is_callable($extra) ? $extra(
-                        $courses, $semester, $session
+                        $courses, $session, $semester
                     ) : $extra;
                 }
 

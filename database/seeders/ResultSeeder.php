@@ -84,6 +84,7 @@ class ResultSeeder extends Seeder
                     }
 
                     [, $session, $courseCodeName, $courseCodeDigit] = $matches;
+                    $session = str_replace('_', '-', $session);
                     $courseCode = "$courseCodeName $courseCodeDigit";
 
                     $course = Course::query()

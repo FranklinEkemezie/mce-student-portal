@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Result;
 use App\Models\Student;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,39 +23,39 @@ class ResultController extends Controller
         $student = auth('student')->user();
 
         $registeredCourses = $student->registeredCourses()->pluck('course_id');
-
         $publishedResultsCourseIds = Result::query()
             ->whereIn('course_id', $registeredCourses)
             ->pluck('course_id')
             ->toArray();
 
-
         return inertia('Student/Result/Index', [
             'registeredCoursesInfo' => $student->groupedRegisteredCourses([
-                'published' => fn(Collection $courses, $semester, $session) => (
-                    $courses->filter(
-                        fn ($course) => in_array($course->id, $publishedResultsCourseIds)
-                    )->count()
+                'published' => fn(Collection $courses, $session, $semester) => (
+                $courses->filter(
+                    fn($course) => in_array($course->id, $publishedResultsCourseIds)
+                )->count()
                 )
             ])
         ]);
     }
 
-    public function show()
+    public function show(Request $request, string $session, string $semester)
     {
-
 
         /**
          * @var Student $student The authenticated student
          */
-        $student = auth('student')->user();
+        $student = $request->user('student');
 
-        $registeredCourses = $student->registeredCourses()->pluck('course_id');
-
+        $registeredCoursesIds = $student->registeredCourses($session, $semester)
+            ->pluck('course_id');
         $results = Result::query()
-            ->whereIn('course_id', $registeredCourses)
             ->with('course')
-            ->get();
+            ->where('session', $session)
+            ->whereIn('course_id', $registeredCoursesIds)
+            ->get()
+            ->filter(fn ($result) => $result->course->semester === $semester);
+
 
         $studentResults = [
             // [course, result]
@@ -83,7 +85,10 @@ class ResultController extends Controller
         }
 
         return inertia('Student/Result/Show', [
-            'results' => $studentResults
+            'results'   => $studentResults,
+            'registeredCoursesIds' => $registeredCoursesIds,
+            'session'   => $session,
+            'semester'  => $semester
         ]);
     }
 }

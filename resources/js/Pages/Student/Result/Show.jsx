@@ -1,10 +1,9 @@
 import StudentLayout from '@/Layouts/StudentLayout.jsx'
 import { Head } from '@inertiajs/react'
-import SecondaryLink from "@/Components/SecondaryLink.jsx";
 import useResult from "@/hooks/useResult.js";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
-export default function Index({ results }) {
+export default function Show({ results, registeredCoursesIds, session, semester }) {
 
     const {
         processResult, getGrade, getRemark, getTotalScore
@@ -30,11 +29,19 @@ export default function Index({ results }) {
                             <div className="flex items-center justify-between border-b pb-4">
                                 <h2 className="text-xl font-bold">📜 Results</h2>
                                 <div>
-                                    <PrimaryButton>🖨 Print</PrimaryButton>
+                                    <PrimaryButton
+                                        onClick={(e) => window.print()}
+                                    >🖨 Print</PrimaryButton>
                                 </div>
                             </div>
 
-                            <div className="mt-6 overflow-y-auto">
+                            <div className="mt-6 overflow-y-auto space-y-6">
+
+                                <div>
+                                    <p>Session: <strong>{session}</strong></p>
+                                    <p>Semester: <strong>{semesterNames[semester]}</strong></p>
+                                    <p>Results Published: <strong>{results.length} out of {registeredCoursesIds.length}</strong></p>
+                                </div>
 
                                 <table className="table-auto w-full">
                                     <thead>
@@ -93,12 +100,7 @@ export default function Index({ results }) {
                                     </tr>
                                     <tr>
                                         <td colSpan={6}></td>
-                                        <td className="text-end px-2 py-1">Semester CGPA</td>
-                                        <td className="font-semibold px-2 py-1">{CGPA}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan={6}></td>
-                                        <td className="text-end px-2 py-1 pb-4">CGPA</td>
+                                        <td className="text-end px-2 py-1 pb-4">Semester GP</td>
                                         <td className="font-semibold px-2 py-1 pb-4">{CGPA}</td>
                                     </tr>
                                     </tfoot>
