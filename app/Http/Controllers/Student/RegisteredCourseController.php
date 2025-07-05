@@ -20,24 +20,7 @@ class RegisteredCourseController extends Controller
 
         /** @var Student $studentId */
         $student = auth('student')->user();
-
-        $registeredCoursesInfo = $student->registeredCourses()->get()
-            ->groupBy(fn($course) => ["{$course->pivot->session} $course->semester"])
-            ->map(function ($courses, string $sessionSemesterGroup) {
-                [$session, $semester] = explode(' ', $sessionSemesterGroup);
-                return [
-                    'session'   => $session,
-                    'semester'  => $semester,
-                    // students may borrow/add courses which is not usually offered
-                    // in their current level (e.g. carry over).
-                    // We assume course registration is independent of level (for now)
-                    // and students can register any course even if it's not in their level.
-                    // Here, for simplicity, we send the level of the first course in the
-                    // group of courses.
-                    'level'     => $courses[0]->level
-                ];
-            })
-            ->values();
+        $registeredCoursesInfo = $student->groupedRegisteredCourses();
 
         return inertia('Student/Course/Index', [
             'registeredCoursesInfo' => $registeredCoursesInfo
@@ -68,6 +51,7 @@ class RegisteredCourseController extends Controller
             ->select('courses.*')
             ->selectRaw('CASE WHEN cr.id IS NULL THEN false ELSE true END as is_registered')
             ->get();
+
         return inertia('Student/Course/Register', [
             'courses'   => $courses,
             'semester'  => $semester,

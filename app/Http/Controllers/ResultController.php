@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Result;
 use App\Models\Student;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,7 +20,38 @@ class ResultController extends Controller
          */
         $student = auth('student')->user();
 
+        $registeredCourses = $student->registeredCourses()->pluck('course_id');
+
+        $publishedResultsCourseIds = Result::query()
+            ->whereIn('course_id', $registeredCourses)
+            ->pluck('course_id')
+            ->toArray();
+
+
+        return inertia('Student/Result/Index', [
+            'registeredCoursesInfo' => $student->groupedRegisteredCourses([
+                'published' => fn(Collection $courses, $semester, $session) => (
+                    $courses->filter(
+                        fn ($course) => in_array($course->id, $publishedResultsCourseIds)
+                    )->count()
+                )
+            ])
+        ]);
+    }
+
+    public function show()
+    {
+
+
+        /**
+         * @var Student $student The authenticated student
+         */
+        $student = auth('student')->user();
+
+        $registeredCourses = $student->registeredCourses()->pluck('course_id');
+
         $results = Result::query()
+            ->whereIn('course_id', $registeredCourses)
             ->with('course')
             ->get();
 
@@ -50,7 +82,7 @@ class ResultController extends Controller
 
         }
 
-        return inertia('Student/Result/Index', [
+        return inertia('Student/Result/Show', [
             'results' => $studentResults
         ]);
     }

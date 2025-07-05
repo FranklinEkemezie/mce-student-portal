@@ -27,6 +27,8 @@ Route::middleware('auth:student')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/results', [ResultController::class, 'index'])->name('results.index');
+    Route::get('/results/{session}/{semester}', [ResultController::class, 'show'])->name('results.show');
+
 
     // Course registration
     Route::prefix('/courses')->controller(RegisteredCourseController::class)->name('registered-courses.')->group(function () {
